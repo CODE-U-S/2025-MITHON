@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const ChatRoom = ({ chatTarget, messages, updateChatHistory }) => {
+const ChatRoom = ({ chatTarget, messages, updateChatHistory, friendIntimacy }) => {
     const [messageInput, setMessageInput] = useState('');
     const messagesEndRef = useRef(null);
 
@@ -40,8 +40,9 @@ const ChatRoom = ({ chatTarget, messages, updateChatHistory }) => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%', border: '1px solid #ccc', width: '100%', maxWidth: '400px' }}>
-            <div style={{ padding: '10px', borderBottom: '1px solid #eee', textAlign: 'center' }}>
+            <div style={{ padding: '10px', borderBottom: '1px solid #eee', textAlign: 'center', position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10 }}>
                 <h3>{chatTarget ? `${chatTarget}님과의 채팅` : '채팅방'}</h3>
+                <p>친밀도: {friendIntimacy}</p>
             </div>
 
             <div style={{ flex: 1, padding: '10px', overflowY: 'auto' }}>
