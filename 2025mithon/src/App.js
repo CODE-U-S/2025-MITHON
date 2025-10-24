@@ -6,8 +6,14 @@ import ProfileDisplay from './ProfileDisplay';
 import ProfileEdit from './ProfileEdit';
 import FriendListModal from './FriendListModal';
 import FriendProfileDisplay from './FriendProfileDisplay';
+import ProfileEditLogo from './assets/myProfileEdit.png'; // 중앙 아이콘
+import ProgramLogo from './assets/Logo.png'; // 상단 로고
+import peopleMyeonsang from './assets/peopleMyeonsang.png';
+import HomeIcon from './assets/home.png';
+import ChatIcon from './assets/chat.png';
 
 function App() {
+  // --- 기존 State 및 useEffect, 핸들러 함수들 (변경 없음) ---
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('home');
@@ -39,7 +45,7 @@ function App() {
     try {
         const storedUsers = localStorage.getItem('allUsers');
         if (storedUsers) {
-            initialAllUsers = JSON.parse(storedUsers);
+          initialAllUsers = JSON.parse(storedUsers);
         }
     } catch (error) {
         console.error("Error parsing allUsers from localStorage", error);
@@ -48,20 +54,20 @@ function App() {
 
     if (!initialAllUsers || initialAllUsers.length === 0) {
         initialAllUsers = [
-            { id: 1, name: '친구1', intimacy: 0, status: '온라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 2, name: '친구2', intimacy: 0, status: '오프라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 3, name: '친구3', intimacy: 0, status: '온라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 4, name: '친구4', intimacy: 0, status: '온라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 5, name: '친구5', intimacy: 0, status: '오프라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 6, name: '친구6', intimacy: 0, status: '온라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 7, name: '친구7', intimacy: 0, status: '온라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 8, name: '친구8', intimacy: 0, status: '오프라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 9, name: '친구9', intimacy: 0, status: '온라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 10, name: '친구10', intimacy: 0, status: '온라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 11, name: '친구11', intimacy: 0, status: '오프라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 12, name: '친구12', intimacy: 0, status: '온라인', isFriend: true, profilePic: 'https://placehold.co/60x60' },
-            { id: 13, name: '추천친구1', intimacy: 0, status: '온라인', isFriend: false, profilePic: 'https://placehold.co/60x60' },
-            { id: 14, name: '추천친구2', intimacy: 0, status: '오프라인', isFriend: false, profilePic: 'https://placehold.co/60x60' }
+            { id: 1, name: '친구1', intimacy: 0, status: '온라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 2, name: '친구2', intimacy: 0, status: '오프라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 3, name: '친구3', intimacy: 0, status: '온라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 4, name: '친구4', intimacy: 0, status: '온라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 5, name: '친구5', intimacy: 0, status: '오프라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 6, name: '친구6', intimacy: 0, status: '온라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 7, name: '친구7', intimacy: 0, status: '온라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 8, name: '친구8', intimacy: 0, status: '오프라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 9, name: '친구9', intimacy: 0, status: '온라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 10, name: '친구10', intimacy: 0, status: '온라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 11, name: '친구11', intimacy: 0, status: '오프라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 12, name: '친구12', intimacy: 0, status: '온라인', isFriend: true, profilePic:peopleMyeonsang},
+            { id: 13, name: '추천친구1', intimacy: 0, status: '온라인', isFriend: false, profilePic:peopleMyeonsang},
+            { id: 14, name: '추천친구2', intimacy: 0, status: '오프라인', isFriend: false, profilePic:peopleMyeonsang}
         ];
         localStorage.setItem('allUsers', JSON.stringify(initialAllUsers));
     }
@@ -185,11 +191,60 @@ function App() {
   const currentFriend = friendList.find(friend => friend.name === chatTarget);
   const currentFriendIntimacy = currentFriend ? currentFriend.intimacy : 0;
 
+  // --- [추가] 좌표 계산 로직 ---
+  // 중앙 노드 좌표 (Figma 기준)
+  const centerNode = {
+    cx: 122.76 + 156.49 / 2, // left + width/2
+    cy: 362.76 + 156.49 / 2, // top + height/2
+    style: { // 중앙 노드 스타일 (Figma 원본 + zIndex)
+      width: '156.49px',
+      height: '156.49px',
+      left: '122.76px',
+      top: '362.76px',
+      position: 'absolute',
+      cursor: 'pointer',
+      zIndex: 10 // 친구 노드/선보다 위에
+    }
+  };
+
+  // 친구 노드들 정보 (Figma 좌표 기반 중심 계산)
+  // [ {left, top, width, height}, ... ] -> 각 사각형의 정보
+  const friendRects = [
+    { left: 172.67, top: 240.32, width: 24.87, height: 135.32 }, // 1번
+    { left: 93, top: 481.05, width: 50.51, height: 238.56 },      // 2번
+    { left: 215.27, top: 513.42, width: 35.47, height: 246.58 }, // 3번
+    { left: 70.18, top: 305.93, width: 64.31, height: 61.55 },   // 4번
+    { left: 266.43, top: 365.93, width: 105.57, height: 78.60 }, // 5번
+    { left: 17.36, top: 456.62, width: 111.64, height: 118.56 }, // 6번
+    { left: 189, top: 700.42, width: 8.53, height: 78.29 },      // 7번
+    { left: 261.76, top: 210.32, width: 63.24, height: 204.21 }, // 8번
+    { left: 243.02, top: 456.62, width: 104.64, height: 136.46 } // 9번
+  ];
+
+  // 친구 노드 원형 이미지 스타일 계산 (60x60 크기)
+  const friendNodeLayout = friendRects.map(rect => {
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const nodeSize = 60; // 친구 원 크기
+    return {
+      cx: cx,
+      cy: cy,
+      style: {
+        width: `${nodeSize}px`,
+        height: `${nodeSize}px`,
+        left: `${cx - nodeSize / 2}px`, // 중심에서 반지름만큼 빼기
+        top: `${cy - nodeSize / 2}px`,  // 중심에서 반지름만큼 빼기
+      }
+    };
+  });
+  // --- 좌표 계산 로직 끝 ---
 
   return (
     <div className="App">
       {currentScreen === 'home' && isLoggedIn ? (
+        // --- 홈 화면 (로그인 상태) ---
         <div style={{ width: '402px', height: '874px', position: 'relative', background: 'white', overflow: 'hidden' }}>
+          {/* 상단바, 하단 네비 등 원본 코드 유지 */}
           <div style={{ width: '402px', height: '47px', padding: '17px', left: '0px', top: '105px', position: 'absolute', overflow: 'hidden', borderBottom: '1px #C7C7C7 solid', justifyContent: 'flex-start', alignItems: 'center', gap: '10px', display: 'inline-flex' }}>
             <div style={{ width: '101px', height: '22px', position: 'relative' }}>
               <div style={{ left: '0px', top: '0px', position: 'absolute', color: 'black', fontSize: '24px', fontFamily: 'Inter', fontWeight: '400', lineHeight: '22px', wordWrap: 'break-word' }}>마인드맵</div>
@@ -198,20 +253,25 @@ function App() {
           <div style={{ width: '402px', height: '56px', left: '0px', top: '49px', position: 'absolute', background: 'white', overflow: 'hidden', borderBottom: '1px #C7C7C7 solid' }}>
             <div style={{ left: '14px', top: '17px', position: 'absolute', textAlign: 'center', color: 'black', fontSize: '20px', fontFamily: 'Inter', fontWeight: '700', lineHeight: '22px', wordWrap: 'break-word' }}>우</div>
             <div style={{ left: '369.80px', top: '17px', position: 'absolute', textAlign: 'center', color: 'black', fontSize: '20px', fontFamily: 'Inter', fontWeight: '700', lineHeight: '22px', wordWrap: 'break-word' }}>선</div>
-            <img style={{ width: '56px', height: '56px', left: '170px', top: '0px', position: 'absolute', borderBottom: '1px #C7C7C7 solid' }} src="https://placehold.co/56x56" alt="profile" />
+            <img style={{ width: '56px', height: '56px', left: '170px', top: '0px', position: 'absolute', borderBottom: '1px #C7C7C7 solid', objectFit:'contain' }} src={ProgramLogo} alt="Program Logo" />
           </div>
           <div style={{ width: '402px', height: '84px', left: '0px', top: '790px', position: 'absolute', background: 'white', borderTop: '0.50px rgba(60, 60, 67, 0.36) solid', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', display: 'inline-flex' }}>
             <div style={{ alignSelf: 'stretch', height: '53px', paddingLeft: '26px', paddingRight: '26px', justifyContent: 'space-between', alignItems: 'center', display: 'inline-flex' }}>
               <div onClick={() => setCurrentScreen('home')} style={{ flex: '1 1 0', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '3px', display: 'inline-flex', cursor: 'pointer' }}>
-                <div style={{ width: '24px', height: '24px', position: 'relative', overflow: 'hidden' }}>
-                  <div style={{ width: '17.98px', height: '18px', left: '3.01px', top: '3px', position: 'absolute', background: 'black' }}></div>
-                </div>
+                <img
+                  src={HomeIcon} // import한 이미지 변수 사용
+                  alt="홈"
+                  style={{ width: '24px', height: '24px' }} // 아이콘 크기 지정
+                />
                 <div style={{ alignSelf: 'stretch', textAlign: 'center', color: '#007AFF', fontSize: '10px', fontFamily: 'Pretendard', fontWeight: '500', wordWrap: 'break-word' }}>홈</div>
               </div>
               <div onClick={handleOpenChatSelection} style={{ flex: '1 1 0', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '3px', display: 'inline-flex', cursor: 'pointer' }}>
-                <div style={{ width: '24px', height: '24px', position: 'relative', overflow: 'hidden' }}>
-                  <div style={{ width: '18px', height: '18px', left: '3px', top: '3px', position: 'absolute', background: 'rgba(0, 0, 0, 0.40)' }}></div>
-                </div>
+                {/* [수정] div 대신 img 태그 사용 */}
+                <img
+                  src={ChatIcon} // import한 이미지 변수 사용
+                  alt="대화"
+                  style={{ width: '24px', height: '24px' }} // 아이콘 크기 지정
+              />
                 <div style={{ alignSelf: 'stretch', textAlign: 'center', color: '#007AFF', fontSize: '10px', fontFamily: 'Pretendard', fontWeight: '500', wordWrap: 'break-word' }}>대화</div>
               </div>
             </div>
@@ -219,34 +279,86 @@ function App() {
               <div style={{ width: '134px', height: '5px', left: '134px', top: '18px', position: 'absolute', background: 'black', borderRadius: '100px' }}></div>
             </div>
           </div>
-          <div style={{ width: '24.87px', height: '135.32px', left: '172.67px', top: '240.32px', position: 'absolute', opacity: 0.40, borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }}></div>
-          <img style={{ width: '50.51px', height: '238.56px', left: '93px', top: '481.05px', position: 'absolute', opacity: 0.40, background: '#EEEEEE', borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }} src="https://placehold.co/51x239" alt="" />
-          <img style={{ width: '35.47px', height: '246.58px', left: '215.27px', top: '513.42px', position: 'absolute', opacity: 0.40, background: '#EEEEEE', borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }} src="https://placehold.co/35x247" alt="" />
-          <img style={{ width: '64.31px', height: '61.55px', left: '73.18px', top: '365.93px', position: 'absolute', opacity: 0.40, background: '#EEEEEE', borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }} src="https://placehold.co/64x62" alt="" />
-          <div style={{ width: '105.57px', height: '78.60px', left: '266.43px', top: '365.93px', position: 'absolute', opacity: 0.40, borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }}></div>
-          <div style={{ width: '111.64px', height: '118.56px', left: '17.36px', top: '456.62px', position: 'absolute', opacity: 0.40, borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }}></div>
-          <div style={{ width: '8.53px', height: '78.29px', left: '189px', top: '513.42px', position: 'absolute', opacity: 0.40, borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }}></div>
-          <div style={{ width: '63.24px', height: '204.21px', left: '261.76px', top: '210.32px', position: 'absolute', opacity: 0.40, borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }}></div>
-          <div style={{ width: '104.64px', height: '136.46px', left: '243.02px', top: '456.62px', position: 'absolute', opacity: 0.40, borderRadius: '20px', outline: '3px black solid', outlineOffset: '-1.50px' }}></div>
-          <div style={{ width: '156.49px', height: '156.49px', left: '122.76px', top: '362.76px', position: 'absolute', cursor: 'pointer' }} onClick={() => setCurrentScreen('profile')}>
-            <img style={{ width: '60px', height: '60px', left: '6.24px', top: '198.95px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <img style={{ width: '60px', height: '60px', left: '194.91px', top: '230.33px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <img style={{ width: '60px', height: '60px', left: '219.24px', top: '-56.83px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <img style={{ width: '60px', height: '60px', left: '176.91px', top: '-182.44px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <img style={{ width: '60px', height: '60px', left: '110.24px', top: '367.24px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <img style={{ width: '60px', height: '60px', left: '-88.42px', top: '-39.78px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <img style={{ width: '60px', height: '60px', left: '-10.09px', top: '-152.44px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <img style={{ width: '60px', height: '60px', left: '-51.76px', top: '320.33px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <img style={{ width: '60px', height: '60px', left: '-135.76px', top: '200.33px', position: 'absolute', background: '#EEEEEE', borderRadius: '9999px' }} src="https://placehold.co/60x60" alt="" />
-            <div style={{ width: '156.49px', height: '156.49px', left: '0px', top: '0px', position: 'absolute', background: '#999999', borderRadius: '9999px' }}></div>
-            <div style={{ width: '137.79px', height: '137.79px', left: '9.35px', top: '9.35px', position: 'absolute', background: '#F2F2F2', borderRadius: '9999px' }}></div>
-            <div style={{ width: '56.93px', left: '49.78px', top: '45.24px', position: 'absolute', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', display: 'inline-flex' }}>
-              <div style={{ width: '56.93px', height: '56.95px', background: '#119DE3' }}></div>
-              <div style={{ alignSelf: 'stretch', textAlign: 'center', color: '#119DE3', fontSize: '14px', fontFamily: 'Inter', fontWeight: '700', lineHeight: '22px', wordWrap: 'break-word' }}>profile</div>
-            </div>
+
+          {/* [삭제] 1. 기존 사각형 div/img 태그들 (원본 249~257줄) 삭제 */}
+          {/* <div style={{ width: '24.87px', ... }}></div> */}
+          {/* <img style={{ width: '50.51px', ... }} /> */}
+          {/* ... (이하 7개 더 삭제) ... */}
+
+          {/* [추가] 4. SVG 선 그리기 */}
+          <svg
+            width="402px" // 부모 div 크기에 맞춤
+            height="874px"
+            style={{ position: 'absolute', left: 0, top: 0, zIndex: 1 }}
+          >
+            {friendList.slice(0, 9).map((friend, index) => {
+              const layout = friendNodeLayout[index];
+              if (!layout) return null;
+              return (
+                <line
+                  key={`line-${friend.id}`}
+                  x1={centerNode.cx}
+                  y1={centerNode.cy}
+                  x2={layout.cx}
+                  y2={layout.cy}
+                  stroke="#C7C7C7" // 선 색상
+                  strokeWidth="2"   // 선 두께
+                />
+              );
+            })}
+          </svg>
+
+          {/* [삭제] 1. 중앙 노드 원본 코드의 img 9개 삭제 */}
+          {/* [수정] 2. 중앙 노드 로고 변경 및 스타일 적용 */}
+          <div style={centerNode.style} onClick={() => setCurrentScreen('profile')}>
+            {/* 원본의 회색/흰색 배경 원은 유지 */}
+            <div style={{ width: '100%', height: '100%', left: '0px', top: '0px', position: 'absolute', background: '#999999', borderRadius: '9999px' }}></div>
+            <div style={{ width: 'calc(100% - 18.7px)', height: 'calc(100% - 18.7px)', left: '9.35px', top: '9.35px', position: 'absolute', background: '#F2F2F2', borderRadius: '9999px' }}></div>
+            {/* 파란 사각형 대신 ProfileEditLogo 이미지 삽입 */}
+            <img
+              src={ProfileEditLogo}
+              alt="My Profile"
+              style={{
+                position: 'absolute', // 부모 기준 배치
+                width: '150px', // Figma 크기 유지 또는 조절
+                height: '150px',
+                left: '50%', // 중앙 정렬
+                top: '50%',
+                transform: 'translate(-50%, -50%)', // 중앙 정렬
+                objectFit: 'contain' // 이미지 비율 유지
+              }}
+            />
+            {/* 'profile' 텍스트는 로고에 포함되어 있으므로 삭제 */}
           </div>
+
+          {/* [추가] 5. 친구 노드 (원형 이미지) 9개 그리기 */}
+          {friendList.slice(0, 9).map((friend, index) => {
+            const layout = friendNodeLayout[index];
+            if (!layout) return null;
+            return (
+              <img
+                key={`friend-${friend.id}`}
+                src={friend.profilePic}
+                alt={friend.name}
+                title={friend.name}
+                onClick={() => handleViewFriendProfile(friend)}
+                style={{
+                  ...layout.style, // 계산된 left, top, width, height
+                  position: 'absolute',
+                  borderRadius: '9999px', // 원형
+                  objectFit: 'cover',   // 이미지 꽉 채우기
+                  cursor: 'pointer',
+                  zIndex: 10,           // 선보다 위에
+                  border: '2px solid white' // 테두리 (선택 사항)
+                }}
+              />
+            );
+          })}
+
         </div>
       ) : (
+        // --- 그 외 화면 (로그인 안됨, 채팅, 프로필 등) ---
+        // --- 원본 코드 그대로 유지 ---
         <>
           {isLoggedIn ? (
             <button onClick={handleLogout} className="main-logout-btn">
@@ -291,12 +403,13 @@ function App() {
 
           <div style={{ position: 'fixed', bottom: '0', width: '100%', display: 'flex', justifyContent: 'space-around', padding: '10px', background: '#f8f8f8', borderTop: '1px solid #eee', zIndex: 999 }}>
             <button onClick={() => setCurrentScreen('home')} style={{ padding: '8px 15px', background: currentScreen === 'home' ? '#e0e0e0' : 'none', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>홈</button>
-            <button onClick={handleOpenChatSelection} style={{ padding: '8px 15px', background: currentScreen === 'chat' ? '#e0e0e0' : 'none', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>채팅</button>
+            <button onClick={handleOpenChatSelection} style={{ padding: '8px 15px', background: currentScreen === 'chat' ? '#e0e0e0' : 'none', border: 'none', borderRadius: '5px', cursor: 'pointer'}}>채팅</button>
             <button onClick={() => setCurrentScreen('profile')} style={{ padding: '8px 15px', background: currentScreen === 'profile' || currentScreen === 'editProfile' ? '#e0e0e0' : 'none', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>프로필</button>
           </div>
         </>
       )}
 
+      {/* --- 모달 창 (원본 코드 그대로) --- */}
       {showLoginModal && (
         <div className="modal-overlay">
           <Login onLoginSuccess={handleLoginSuccess} onClose={closeLoginModal} />
